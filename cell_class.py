@@ -2,9 +2,9 @@ class Cell(object):
 
     cell_number = 0
 
-    def __init__(self, loc, migration = False, time = 0):
+    def __init__(self, current_loc, old_loc = (0, 0), migration = False, time = 0):
         Cell.cell_number += 1
-        self.loc = loc
+        self.current_loc = current_loc
         self.migration = migration
         self.time = time
         self.cell_number = Cell.cell_number
@@ -21,11 +21,15 @@ class Cell(object):
     def get_number(self):
         return cell_number
 
-    def set_loc(self, loc):
-        self.loc = loc
+    def set_loc(self, current_loc):
+        self.old_loc = self.current_loc
+        self.new_loc = current_loc
 
-    def get_loc(self):
-        return self.loc
+    def get_current_loc(self):
+        return self.current_loc
+
+    def get_old_loc(self):
+        return self.old_loc
 
     def set_transmigration(self, migration):
         self.migration = migration
@@ -34,4 +38,4 @@ class Cell(object):
         return self.transmigration
 
     def __str__(self):
-        return str(self.cell_number) + " "  + str(self.loc) + " " + str(self.migration) + " " + str(self.time)
+        return str(self.cell_number) + ", "  + str(self.old_loc) + ", " + str(self.current_loc) + ", " + str(self.migration) + ", " + str(self.time)

@@ -42,7 +42,7 @@ def UniqueHits(zip_list, initialized_list):
     return initialized_list
 
 def MatchedTemplate(img, template, method):
-    img = data.copy()
+    img_copy = img.copy()
     method = eval(meth)
 
     # Apply template Matching
@@ -59,10 +59,10 @@ def MatchedTemplate(img, template, method):
 
     for tup in match_locations:
         x, y = tup[1], tup[0]
-        cv2.rectangle(data, (x, y), (x + w, y + h), (255, 165, 0), 2)
+        cv2.rectangle(img, (x, y), (x + w, y + h), (255, 165, 0), 2)
 
     f, ax1 = plt.subplots(1, 1)
-    ax1.imshow(data, cmap = 'gray')
+    ax1.imshow(img, cmap = 'gray')
     plt.show()
 
     return match_locations
@@ -71,16 +71,20 @@ def TrackCells(cell_list, match_locations):
     for cell in cell_list:
         min_dist = np.inf
         current_index = -1
+
         for i in range(len(match_locations)):
-            dist = distance(cell.get_loc(), match_locations[i])
+            dist = distance(cell.get_current_loc(), match_locations[i])
             if dist < min_dist:
                 min_dist = dist
                 current_index = i
-            
 
-data = img_list[0]
+        cell.set_loc(match_locations.pop(current_index))
 
-match_locations = MatchedTemplate(data, template, meth)
+    return cell_list
+
+data1 = img_list[0]
+
+match_locations = MatchedTemplate(data1, template, meth)
 
 cell_list = []
 for tup in match_locations:
@@ -89,8 +93,16 @@ for tup in match_locations:
 img_list = img_list[1:]
 
 for data in img_list:
+    img = data.copy()
     counter += 1
 
+    match_locations = MatchedTemplate(img, template, meth)
 
-    if counter == 1:
-        break
+    cell_list = TrackCells(cell_list, match_locations)
+
+    for cell in cell_list:
+        print(cell)
+        print(cell.get_current_loc == cell.get_old_loc)
+
+    #if counter == 1:
+    #    break
