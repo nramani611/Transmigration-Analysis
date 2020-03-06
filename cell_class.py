@@ -8,6 +8,7 @@ class Cell(object):
         self.migration = migration
         self.time = time
         self.cell_number = Cell.cell_number
+        self.old_loc = old_loc
 
     def set_time(self, time):
         self.time = time
@@ -23,7 +24,7 @@ class Cell(object):
 
     def set_loc(self, current_loc):
         self.old_loc = self.current_loc
-        self.new_loc = current_loc
+        self.current_loc = current_loc
 
     def get_current_loc(self):
         return self.current_loc

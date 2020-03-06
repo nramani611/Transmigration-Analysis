@@ -72,13 +72,14 @@ def TrackCells(cell_list, match_locations):
         min_dist = np.inf
         current_index = -1
 
-        for i in range(len(match_locations)):
-            dist = distance(cell.get_current_loc(), match_locations[i])
-            if dist < min_dist:
-                min_dist = dist
-                current_index = i
+        while len(match_locations) != 0:
+            for i in range(len(match_locations)):
+                dist = distance(cell.get_current_loc(), match_locations[i])
+                if dist < min_dist:
+                    min_dist = dist
+                    current_index = i
 
-        cell.set_loc(match_locations.pop(current_index))
+            cell.set_loc(match_locations.pop(current_index))
 
     return cell_list
 
@@ -102,7 +103,6 @@ for data in img_list:
 
     for cell in cell_list:
         print(cell)
-        print(cell.get_current_loc == cell.get_old_loc)
 
     #if counter == 1:
     #    break
