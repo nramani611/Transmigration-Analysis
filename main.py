@@ -106,10 +106,12 @@ for data in img_list:
 
     match_locations = MatchedTemplate(img, template, meth)
 
+    cv2.imwrite("example.png", img)
+
     cell_list = TrackCells(cell_list, match_locations)
 
     for cell in cell_list:
         print(cell)
 
-    #Break statement just to test first iteration    
+    #Break statement just to test first iteration
     break
