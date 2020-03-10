@@ -69,17 +69,25 @@ def MatchedTemplate(img, template, method):
 
 def TrackCells(cell_list, match_locations):
     for cell in cell_list:
+        new_cell_list = []
         min_dist = np.inf
         current_index = -1
 
-        while len(match_locations) != 0:
-            for i in range(len(match_locations)):
-                dist = distance(cell.get_current_loc(), match_locations[i])
-                if dist < min_dist:
-                    min_dist = dist
-                    current_index = i
+        for i in range(len(match_locations)):
+            dist = distance(cell.get_current_loc(), match_locations[i])
+            if dist < min_dist:
+                min_dist = dist
+                current_index = i
 
+        print(len(match_locations), current_index)
+
+        try:
             cell.set_loc(match_locations.pop(current_index))
+            new_cell_list.append(cell)
+
+        except IndexError:
+            break
+
 
     return cell_list
 
@@ -101,8 +109,8 @@ for data in img_list:
 
     cell_list = TrackCells(cell_list, match_locations)
 
-    for cell in cell_list:
-        print(cell)
+    #for cell in cell_list:
+        #print(cell)
 
     #if counter == 1:
     #    break
