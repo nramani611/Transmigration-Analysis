@@ -17,8 +17,8 @@ meth = 'cv2.TM_CCOEFF'
 counter = 0
 h_bins = 256
 
+#Helper Functions
 def list_2_tuple(list1, list2):
-    #assert len(list1) == len(list), 'Lists must have equal lengths'
     tup_list = []
     for i in range(len(list1)):
         tup = (list1[i], list2[i])
@@ -26,7 +26,6 @@ def list_2_tuple(list1, list2):
     return tup_list
 
 def distance(tup1, tup2):
-    #print(type(tup1), type(tup2))
     return math.sqrt((tup2[1] - tup1[1])**2 + (tup2[0] - tup1[0])**2)
 
 def UniqueHits(zip_list, initialized_list):
@@ -35,12 +34,37 @@ def UniqueHits(zip_list, initialized_list):
         counter = 0
         for tup2 in initialized_list:
             if distance(tup1, tup2) < 20:
-                counter += 1
+                #counter += 1
                 break
-        if counter == 0:
+        else:
             initialized_list.append(tup1)
     return initialized_list
 
+def TrackCells(cell_list, match_locations):
+    for cell in cell_list:
+        new_cell_list = []
+        min_dist = np.inf
+        current_index = -1
+
+        for i in range(len(match_locations)):
+            dist = distance(cell.get_current_loc(), match_locations[i])
+            if dist < min_dist:
+                min_dist = dist
+                current_index = i
+
+        print(len(match_locations), current_index)
+
+        try:
+            cell.set_loc(match_locations.pop(current_index))
+            new_cell_list.append(cell)
+
+        except IndexError:
+            break
+
+
+    return cell_list
+
+#Matched Template function for analyzing images
 def MatchedTemplate(img, template, method):
     img_copy = img.copy()
     method = eval(meth)
@@ -67,30 +91,6 @@ def MatchedTemplate(img, template, method):
 
     return match_locations
 
-def TrackCells(cell_list, match_locations):
-    for cell in cell_list:
-        new_cell_list = []
-        min_dist = np.inf
-        current_index = -1
-
-        for i in range(len(match_locations)):
-            dist = distance(cell.get_current_loc(), match_locations[i])
-            if dist < min_dist:
-                min_dist = dist
-                current_index = i
-
-        print(len(match_locations), current_index)
-
-        try:
-            cell.set_loc(match_locations.pop(current_index))
-            new_cell_list.append(cell)
-
-        except IndexError:
-            break
-
-
-    return cell_list
-
 data1 = img_list[0]
 
 match_locations = MatchedTemplate(data1, template, meth)
@@ -103,14 +103,13 @@ img_list = img_list[1:]
 
 for data in img_list:
     img = data.copy()
-    counter += 1
 
     match_locations = MatchedTemplate(img, template, meth)
 
     cell_list = TrackCells(cell_list, match_locations)
 
-    #for cell in cell_list:
-        #print(cell)
+    for cell in cell_list:
+        print(cell)
 
-    #if counter == 1:
-    #    break
+    #Break statement just to test first iteration    
+    break
