@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 import math
 from matplotlib import pyplot as plt
-import cell_class as cell
+from cell_class import *
 
 def list_2_tuple(list1, list2):
     tup_list = []
@@ -32,29 +32,29 @@ def UniqueHits(zip_list):
 def TrackCells(cell_list, match_locations):
     new_cell_list = []
 
-    for i in range(len(match_locations)):
-        all_dist = []
-        #min_dist = np.inf
-        #current_index = -1
+    while len(match_locations) != 0:
+        target_loc = match_locations.pop()
+        current_dist = np.inf
 
-        for cell in cell_list:
-            dist = distance(cell.get_current_loc(), match_locations[i])
-            all_dist.append(dist)
-            #if dist < min_dist:
-            #    min_dist = dist
-            #    current_index = i
+        for index in range(len(cell_list)):
+            dist = distance(cell_list[index].get_current_loc(), target_loc)
+            if dist < current_dist:
+                ind = index
+                current_dist = dist
+
+        if current_dist > 20:
+            continue
 
         try:
-            target_cell = cell_list.pop(all_dist.index(min(all_dist)))
-            target_cell.set_loc(match_locations[i])
-            print(target_cell)
-            #cell.set_loc(match_locations.pop(current_index))
+            target_cell = cell_list.pop(ind)
+            target_cell.set_loc(target_loc)
             new_cell_list.append(target_cell)
 
-        except IndexError:
-            break
+        except ValueError:
+            continue
 
-        #print(len(new_cell_list))
+        except IndexError:
+            continue
 
 
     return new_cell_list
@@ -74,15 +74,20 @@ def MatchedTemplate(img, template, method, w, h, cell_list = []):
     match_locations = list_2_tuple(list(match_locations[0]), list(match_locations[1]))
     match_locations  = UniqueHits(match_locations)
 
-    if cell_list != []:
+    if cell_list == []:
+        for tup in match_locations:
+            cell_list.append(Cell(tup))
+    else:
         cell_list = TrackCells(cell_list, match_locations)
 
     for cell in cell_list:
         x, y = cell.get_current_loc()[1], cell.get_current_loc()[0]
         cv2.rectangle(img, (x, y), (x + w, y + h), (255, 165, 0), 2)
 
+    print(len(cell_list))
+
     f, ax1 = plt.subplots(1, 1)
     ax1.imshow(img, cmap = 'gray')
     plt.show()
 
-    return (match_locations, cell_list)
+    return cell_list
