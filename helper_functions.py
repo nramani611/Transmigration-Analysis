@@ -23,7 +23,6 @@ def UniqueHits(zip_list):
         counter = 0
         for tup2 in initialized_list:
             if distance(tup1, tup2) < 20:
-                #counter += 1
                 break
         else:
             initialized_list.append(tup1)
@@ -59,8 +58,13 @@ def TrackCells(cell_list, match_locations):
 
     return new_cell_list
 
+def UpdatePng(cell_list, png_file):
+    for cell in cell_list:
+        cv2.line(png_file, cell.get_old_loc(), cell.get_current_loc(), (255, 0, 0, 255), 2)
+    return png_file
+
 #Matched Template function for analyzing images
-def MatchedTemplate(img, template, method, w, h, cell_list = []):
+def MatchedTemplate(img, template, method, w, h, png_file, cell_list = []):
     img_copy = img.copy()
     method = eval(method)
 
@@ -82,12 +86,17 @@ def MatchedTemplate(img, template, method, w, h, cell_list = []):
 
     for cell in cell_list:
         x, y = cell.get_current_loc()[1], cell.get_current_loc()[0]
-        cv2.rectangle(img, (x, y), (x + w, y + h), (255, 165, 0), 2)
+        cv2.putText(img_copy, str(cell.get_cell_number()), (x, y), cv2.FONT_HERSHEY_PLAIN, 2, (209, 80, 0, 255), 2)
+        cv2.rectangle(img_copy, (x, y), (x + w, y + h), (255, 165, 0), 2)
 
-    print(len(cell_list))
+    #res = img[:]
+    #png_file = UpdatePng(cell_list, png_file)
+    #cnd = png_file[:, :, 3] > 0
+    #res[:] = png_file[:]
 
     f, ax1 = plt.subplots(1, 1)
-    ax1.imshow(img, cmap = 'gray')
+    ax1.imshow(img_copy, cmap = 'gray')
+    cv2.waitKey(0)
     plt.show()
 
     return cell_list
