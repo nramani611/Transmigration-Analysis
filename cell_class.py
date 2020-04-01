@@ -10,6 +10,9 @@ class Cell(object):
         self.cell_number = Cell.cell_number
         self.old_loc = old_loc
 
+    def get_cell_number(self):
+        return self.cell_number
+
     def set_time(self, time):
         self.time = time
 
