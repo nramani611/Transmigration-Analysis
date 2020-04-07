@@ -89,10 +89,7 @@ def MatchedTemplate(img, template, method, w, h, png_file, cell_list = []):
         cv2.putText(img_copy, str(cell.get_cell_number()), (x, y), cv2.FONT_HERSHEY_PLAIN, 2, (209, 80, 0, 255), 2)
         cv2.rectangle(img_copy, (x, y), (x + w, y + h), (255, 165, 0), 2)
 
-    #res = img[:]
     #png_file = UpdatePng(cell_list, png_file)
-    #cnd = png_file[:, :, 3] > 0
-    #res[:] = png_file[:]
 
     f, ax1 = plt.subplots(1, 1)
     ax1.imshow(img_copy, cmap = 'gray')
