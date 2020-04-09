@@ -63,9 +63,19 @@ def UpdatePng(cell_list, png_file):
         cv2.line(png_file, cell.get_old_loc(), cell.get_current_loc(), (255, 0, 0, 255), 2)
     return png_file
 
+def HistList(list):
+    new_list = []
+    for i in list:
+        for j in i:
+             new_list.append(j)
+    new_list.sort(reverse = True)
+    return new_list
+
 #Matched Template function for analyzing images
 def MatchedTemplate(img, template, method, w, h, png_file, cell_list = []):
     img_copy = img.copy()
+    #hist1 = cv2.calcHist([img], [0], None, [256], [0, 256])
+    #hist1 = HistList(hist1.tolist())
     method = eval(method)
 
     # Apply template Matching
@@ -89,14 +99,18 @@ def MatchedTemplate(img, template, method, w, h, png_file, cell_list = []):
         cv2.putText(img_copy, str(cell.get_cell_number()), (x, y), cv2.FONT_HERSHEY_PLAIN, 2, (209, 80, 0, 255), 2)
         cv2.rectangle(img_copy, (x, y), (x + w, y + h), (255, 165, 0), 2)
 
-    #res = img[:]
     #png_file = UpdatePng(cell_list, png_file)
-    #cnd = png_file[:, :, 3] > 0
-    #res[:] = png_file[:]
 
     f, ax1 = plt.subplots(1, 1)
     ax1.imshow(img_copy, cmap = 'gray')
-    cv2.waitKey(0)
+
+    #hist = cv2.calcHist([img], [0], None, [256], [0, 256])
+    #hist = HistList(hist.tolist())
+    #print(hist)
+
+    #x = np.linspace(0, 255, 1).invert()
+    #ax2.plot(x, hist)
+    #ax3.plot(hist1)
     plt.show()
 
     return cell_list
