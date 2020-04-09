@@ -101,15 +101,15 @@ def MatchedTemplate(img, template, method, w, h, png_file, cell_list = []):
 
     #png_file = UpdatePng(cell_list, png_file)
 
-    f, (ax1, ax2) = plt.subplots(1, 2)
+    f, ax1 = plt.subplots(1, 1)
     ax1.imshow(img_copy, cmap = 'gray')
 
-    hist = cv2.calcHist([img], [0], None, [256], [0, 256])
-    hist = HistList(hist.tolist())
-    print(hist)
+    #hist = cv2.calcHist([img], [0], None, [256], [0, 256])
+    #hist = HistList(hist.tolist())
+    #print(hist)
 
-    x = np.linspace(0, 255, 1).invert()
-    ax2.plot(x, hist)
+    #x = np.linspace(0, 255, 1).invert()
+    #ax2.plot(x, hist)
     #ax3.plot(hist1)
     plt.show()
 
