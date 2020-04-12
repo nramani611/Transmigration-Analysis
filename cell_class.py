@@ -2,7 +2,7 @@ class Cell(object):
 
     cell_number = 0
 
-    def __init__(self, current_loc, old_loc = (0, 0), migration = False, time = 0):
+    def __init__(self, current_loc, old_loc = None, migration = False, time = 0):
         Cell.cell_number += 1
         self.current_loc = current_loc
         self.migration = migration
