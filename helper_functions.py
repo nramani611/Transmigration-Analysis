@@ -104,24 +104,24 @@ def MatchedTemplate(img, template, method, w, h, png_file, cell_list = []):
 
         png_file = UpdatePng(cell_list, png_file)
 
-<<<<<<< HEAD
+
     f, ax1 = plt.subplots(1, 1)
-=======
+
     #f,(ax1, ax2) = plt.subplots(1, 2)
     #ax1.imshow(img_copy, cmap = 'gray')
     
     
     f,(ax1) = plt.subplots(figsize=(10,10))
->>>>>>> e4cb466... Now contains cell tracking lines
+
     ax1.imshow(img_copy, cmap = 'gray')
     ax1.imshow(png_file, cmap = 'gray', alpha = 0.2)
 
-<<<<<<< HEAD
+
     #hist = cv2.calcHist([img], [0], None, [256], [0, 256])
     #hist = HistList(hist.tolist())
     #print(hist)
 
-=======
+
 
 
 
@@ -130,7 +130,6 @@ def MatchedTemplate(img, template, method, w, h, png_file, cell_list = []):
    # hist = HistList(hist.tolist())
     #print(hist)
 
->>>>>>> e4cb466... Now contains cell tracking lines
     #x = np.linspace(0, 255, 1).invert()
     #ax2.plot(x, hist)
     #ax3.plot(hist1)
