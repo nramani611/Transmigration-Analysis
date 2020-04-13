@@ -60,7 +60,10 @@ def TrackCells(cell_list, match_locations):
 
 def UpdatePng(cell_list, png_file):
     for cell in cell_list:
-        cv2.line(png_file, cell.get_old_loc(), cell.get_current_loc(), (255, 0, 0, 255), 2)
+        if cell.get_old_loc() == (0,0):
+            continue 
+        else: 
+            cv2.line(png_file, cell.get_old_loc(), cell.get_current_loc(), (255, 0, 0, 255), 2)
     return png_file
 
 def HistList(list):
@@ -99,18 +102,27 @@ def MatchedTemplate(img, template, method, w, h, png_file, cell_list = []):
         cv2.putText(img_copy, str(cell.get_cell_number()), (x, y), cv2.FONT_HERSHEY_PLAIN, 2, (209, 80, 0, 255), 2)
         cv2.rectangle(img_copy, (x, y), (x + w, y + h), (255, 165, 0), 2)
 
-    #png_file = UpdatePng(cell_list, png_file)
+        png_file = UpdatePng(cell_list, png_file)
 
-    f, (ax1, ax2) = plt.subplots(1, 2)
+    #f,(ax1, ax2) = plt.subplots(1, 2)
+    #ax1.imshow(img_copy, cmap = 'gray')
+    
+    
+    f,(ax1) = plt.subplots(figsize=(10,10))
     ax1.imshow(img_copy, cmap = 'gray')
+    ax1.imshow(png_file, cmap = 'gray', alpha = 0.2)
 
-    hist = cv2.calcHist([img], [0], None, [256], [0, 256])
-    hist = HistList(hist.tolist())
-    print(hist)
 
-    x = np.linspace(0, 255, 1).invert()
-    ax2.plot(x, hist)
+
+
+
+   # hist = cv2.calcHist([img], [0], None, [256], [0, 256])
+   # hist = HistList(hist.tolist())
+    #print(hist)
+
+    #x = np.linspace(0, 255, 1).invert()
+    #ax2.plot(x, hist)
     #ax3.plot(hist1)
-    plt.show()
+    #plt.show()
 
     return cell_list
