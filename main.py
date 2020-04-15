@@ -33,5 +33,5 @@ for data in img_list:
     cell_list = MatchedTemplate(img, template, meth, w, h, png_file, cell_list)
 
     #Break statement just to test after a set number of iterations
-    if counter == 3:
-        break
+    #if counter == 3:
+    #    break

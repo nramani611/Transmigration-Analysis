@@ -60,7 +60,10 @@ def TrackCells(cell_list, match_locations):
 
 def UpdatePng(cell_list, png_file):
     for cell in cell_list:
-        cv2.line(png_file, cell.get_old_loc(), cell.get_current_loc(), (255, 0, 0, 255), 2)
+        if cell.get_old_loc() == None:
+            break
+        else:
+            cv2.line(png_file, cell.get_old_loc(), cell.get_current_loc(), (255, 0, 0, 255), 2)
     return png_file
 
 def HistList(list):
@@ -74,8 +77,6 @@ def HistList(list):
 #Matched Template function for analyzing images
 def MatchedTemplate(img, template, method, w, h, png_file, cell_list = []):
     img_copy = img.copy()
-    #hist1 = cv2.calcHist([img], [0], None, [256], [0, 256])
-    #hist1 = HistList(hist1.tolist())
     method = eval(method)
 
     # Apply template Matching
@@ -99,7 +100,7 @@ def MatchedTemplate(img, template, method, w, h, png_file, cell_list = []):
         cv2.putText(img_copy, str(cell.get_cell_number()), (x, y), cv2.FONT_HERSHEY_PLAIN, 2, (209, 80, 0, 255), 2)
         cv2.rectangle(img_copy, (x, y), (x + w, y + h), (255, 165, 0), 2)
 
-    #png_file = UpdatePng(cell_list, png_file)
+    png_file = UpdatePng(cell_list, png_file)
 
     f, (ax1, ax2) = plt.subplots(1, 2)
     ax1.imshow(img_copy, cmap = 'gray')
@@ -108,9 +109,16 @@ def MatchedTemplate(img, template, method, w, h, png_file, cell_list = []):
     hist = HistList(hist.tolist())
     hist = hist[::-1]
 
-    x = np.linspace(0, 255, 256)
+    new_hist = []
+    for i in hist:
+        if i < 1000:
+            new_hist.append(i)
+
+    #print(new_hist)
+    x = np.linspace(0, 255, len(new_hist))
     x = np.flip(x, 0)
-    ax2.plot(hist, x)
+    #x = x[:100]
+    ax2.plot(new_hist, x)
     plt.show()
 
     return cell_list
