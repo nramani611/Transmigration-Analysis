@@ -34,4 +34,4 @@ for data in img_list:
 
     #Break statement just to test after a set number of iterations
     #if counter == 3:
-    #    break
+    break

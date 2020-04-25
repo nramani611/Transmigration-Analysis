@@ -74,6 +74,14 @@ def HistList(list):
     new_list.sort(reverse = True)
     return new_list
 
+def Display(array, thresh):
+    x, y = array.shape
+    for i in range(x):
+        for j in range(y):
+            if array[i, j] <= thresh:
+                array[i, j] = 255
+    return array
+
 #Matched Template function for analyzing images
 def MatchedTemplate(img, template, method, w, h, png_file, cell_list = []):
     img_copy = img.copy()
@@ -100,7 +108,10 @@ def MatchedTemplate(img, template, method, w, h, png_file, cell_list = []):
         cv2.putText(img_copy, str(cell.get_cell_number()), (x, y), cv2.FONT_HERSHEY_PLAIN, 2, (209, 80, 0, 255), 2)
         cv2.rectangle(img_copy, (x, y), (x + w, y + h), (255, 165, 0), 2)
 
+
     png_file = UpdatePng(cell_list, png_file)
+    img_copy = Display(img_copy, 35)
+    print(img_copy)
 
     f, (ax1, ax2) = plt.subplots(1, 2)
     ax1.imshow(img_copy, cmap = 'gray')
@@ -109,16 +120,21 @@ def MatchedTemplate(img, template, method, w, h, png_file, cell_list = []):
     hist = HistList(hist.tolist())
     hist = hist[::-1]
 
-    new_hist = []
-    for i in hist:
-        if i < 1000:
-            new_hist.append(i)
+    #new_hist = []
+    #for i in hist:
+    #    if i < 250:
+    #        new_hist.append(i)
 
     #print(new_hist)
-    x = np.linspace(0, 255, len(new_hist))
+    x = np.linspace(0, 255, len(hist))
     x = np.flip(x, 0)
     #x = x[:100]
-    ax2.plot(new_hist, x)
+    #print(hist)
+    #print(x)
+    ax2.plot(hist, x)
+    #plt.ylim(0, 50)
+    #yints = range(0, 50)
+    #plt.yticks(yints)
     plt.show()
 
     return cell_list
