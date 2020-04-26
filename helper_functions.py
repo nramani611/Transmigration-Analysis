@@ -61,8 +61,8 @@ def TrackCells(cell_list, match_locations):
 def UpdatePng(cell_list, png_file):
     for cell in cell_list:
         if cell.get_old_loc() == (0,0):
-            continue 
-        else: 
+            continue
+        else:
             cv2.line(png_file, cell.get_old_loc(), cell.get_current_loc(), (255, 0, 0, 255), 2)
     return png_file
 
@@ -102,15 +102,15 @@ def MatchedTemplate(img, template, method, w, h, png_file, cell_list = []):
         cv2.putText(img_copy, str(cell.get_cell_number()), (x, y), cv2.FONT_HERSHEY_PLAIN, 2, (209, 80, 0, 255), 2)
         cv2.rectangle(img_copy, (x, y), (x + w, y + h), (255, 165, 0), 2)
 
-        png_file = UpdatePng(cell_list, png_file)
+    png_file = UpdatePng(cell_list, png_file)
 
 
-    f, ax1 = plt.subplots(1, 1)
+    #f, ax1 = plt.subplots(1, 1)
 
     #f,(ax1, ax2) = plt.subplots(1, 2)
     #ax1.imshow(img_copy, cmap = 'gray')
-    
-    
+
+
     f,(ax1) = plt.subplots(figsize=(10,10))
 
     ax1.imshow(img_copy, cmap = 'gray')
@@ -133,6 +133,6 @@ def MatchedTemplate(img, template, method, w, h, png_file, cell_list = []):
     #x = np.linspace(0, 255, 1).invert()
     #ax2.plot(x, hist)
     #ax3.plot(hist1)
-    #plt.show()
+    plt.show()
 
     return cell_list
