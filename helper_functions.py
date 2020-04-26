@@ -81,6 +81,10 @@ def MatchedTemplate(img, template, method, w, h, png_file, cell_list = []):
     #hist1 = HistList(hist1.tolist())
     method = eval(method)
 
+
+    border_x, border_y = img.shape[::-1]
+    border_x, border_y = v - 30, h - 30
+
     # Apply template Matching
     res = cv2.matchTemplate(img,template,method)
 
@@ -96,7 +100,10 @@ def MatchedTemplate(img, template, method, w, h, png_file, cell_list = []):
             cell_list.append(Cell(tup))
     else:
         cell_list = TrackCells(cell_list, match_locations)
-
+        
+    cell_list = BorderCheck(border_x, border_y, cell_list, border_cell_list = [])
+    # runs it through border check to eliminate cells past the border! 
+    
     for cell in cell_list:
         x, y = cell.get_current_loc()[1], cell.get_current_loc()[0]
         cv2.putText(img_copy, str(cell.get_cell_number()), (x, y), cv2.FONT_HERSHEY_PLAIN, 2, (209, 80, 0, 255), 2)
@@ -122,10 +129,6 @@ def MatchedTemplate(img, template, method, w, h, png_file, cell_list = []):
     #print(hist)
 
 
-
-
-
-
    # hist = cv2.calcHist([img], [0], None, [256], [0, 256])
    # hist = HistList(hist.tolist())
     #print(hist)
@@ -136,3 +139,17 @@ def MatchedTemplate(img, template, method, w, h, png_file, cell_list = []):
     plt.show()
 
     return cell_list
+
+
+def BorderCheck(border_x, border_y, cell_list, border_cell_list = []):
+    # goes through the cell list and eliminates cells past the border.     
+    for cell in cell_list:
+        x, y = cell.get_current_loc()[1], cell.get_current_loc()[0]
+    
+        if x <= border_x or y <= border_y:
+            border_cell_list.append(Cell(tup))
+        else: 
+            continue
+            
+    
+    return border_cell_list

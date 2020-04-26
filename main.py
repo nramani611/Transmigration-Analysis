@@ -17,6 +17,14 @@ img_list = img[1]
 w, h = template.shape[::-1]
 w, h = w + 3, h + 3
 
+
+
+
+
+
+
+
+
 x, y = img_list[0].shape[::-1]
 #print(x, y)
 #print(img_list[0].shape[::-1])
