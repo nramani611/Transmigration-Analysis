@@ -1,5 +1,3 @@
-from libtiff import TIFFfile
-from libtiff import TIFF
 import cv2
 import numpy as np
 import math
@@ -20,7 +18,6 @@ def UniqueHits(zip_list):
     initialized_list = [zip_list[0]]
 
     for tup1 in zip_list:
-        counter = 0
         for tup2 in initialized_list:
             if distance(tup1, tup2) < 20:
                 break
@@ -83,7 +80,7 @@ def Display(array, thresh):
     return array
 
 #Matched Template function for analyzing images
-def MatchedTemplate(img, template, method, w, h, png_file, cell_list = []):
+def MatchedTemplate(img, template, method, w, h, png_file, val, cell_list = []):
     img_copy = img.copy()
     method = eval(method)
 
@@ -110,31 +107,31 @@ def MatchedTemplate(img, template, method, w, h, png_file, cell_list = []):
 
 
     png_file = UpdatePng(cell_list, png_file)
-    img_copy = Display(img_copy, 35)
-    print(img_copy)
+    #print(img_copy)
 
-    f, (ax1, ax2) = plt.subplots(1, 2)
-    ax1.imshow(img_copy, cmap = 'gray')
 
-    hist = cv2.calcHist([img], [0], None, [256], [0, 256])
-    hist = HistList(hist.tolist())
-    hist = hist[::-1]
+    if val == 78:
+        f, ax1 = plt.subplots(1, 1)
+        ax1.imshow(img_copy, cmap = 'gray')
+        plt.show()
+    #hist = cv2.calcHist([img], [0], None, [256], [0, 256])
+    #hist = HistList(hist.tolist())
+    #hist = hist[::-1]
 
     #new_hist = []
     #for i in hist:
-    #    if i < 250:
-    #        new_hist.append(i)
+        #if i < 50:
+        #    new_hist.append(i)
 
     #print(new_hist)
-    x = np.linspace(0, 255, len(hist))
-    x = np.flip(x, 0)
+    #x = np.linspace(0, 255, len(new_hist))
+    #x = np.flip(x, 0)
     #x = x[:100]
     #print(hist)
     #print(x)
-    ax2.plot(hist, x)
-    #plt.ylim(0, 50)
+    #ax2.plot(new_hist, x)
+    #ax2.set_ylim(0, 50)
     #yints = range(0, 50)
-    #plt.yticks(yints)
-    plt.show()
+    #ax2.set_major_locator(yints)
 
     return cell_list
