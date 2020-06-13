@@ -71,12 +71,84 @@ def HistList(list):
     new_list.sort(reverse = True)
     return new_list
 
-def Display(array, thresh):
+def Display(array, thresh, val):
     x, y = array.shape
     for i in range(x):
         for j in range(y):
             if array[i, j] <= thresh:
-                array[i, j] = 255
+                array[i, j] = val
+
+    const = 2
+    for i in range(0, const):
+        for j in range(y):
+            array[i, j] = val
+    for i in range(x):
+        for j in range(0, const):
+            array[i, j] = val
+    for i in range(x - const, x):
+        for j in range(y):
+            array[i, j] = val
+    for i in range(x):
+        for j in range(y - const, y):
+            array[i, j] = val
+
+    for _ in range(2):
+        for i in range(2, x - 2):
+            for j in range(2, y - 2):
+                counter = 0
+                if array[i, j] != val:
+                    if array[i - 1, j] == val:
+                        counter += 1
+                    if array[i, j - 1] == val:
+                        counter += 1
+                    if array[i + 1, j] == val:
+                        counter += 1
+                    if array[i, j + 1] == val:
+                        counter += 1
+                    if array[i + 1, j + 1] == val:
+                        counter += 1
+                    if array[i - 1, j - 1] == val:
+                        counter += 1
+                    if array[i - 1, j + 1] == val:
+                        counter += 1
+                    if array[i + 1, j - 1] == val:
+                        counter += 1
+                    if array[i - 2, j] == val:
+                        counter += 1
+                    if array[i, j - 2] == val:
+                        counter += 1
+                    if array[i + 2, j] == val:
+                        counter += 1
+                    if array[i, j + 2] == val:
+                        counter += 1
+                    if array[i + 2, j + 2] == val:
+                        counter += 1
+                    if array[i - 2, j - 2] == val:
+                        counter += 1
+                    if array[i - 2, j + 2] == val:
+                        counter += 1
+                    if array[i + 2, j - 2] == val:
+                        counter += 1
+                    if array[i + 2, j - 1] == val:
+                        counter += 1
+                    if array[i + 2, j + 1] == val:
+                        counter += 1
+                    if array[i + 1, j - 2] == val:
+                        counter += 1
+                    if array[i + 1, j + 2] == val:
+                        counter += 1
+                    if array[i - 2, j + 1] == val:
+                        counter += 1
+                    if array[i - 2, j + 1] == val:
+                        counter += 1
+                    if array[i - 1, j - 2] == val:
+                        counter += 1
+                    if array[i - 1, j + 2] == val:
+                        counter += 1
+                    if counter > 22:
+                        array[i, j] = val
+                #print(counter)
+
     return array
 
 #Matched Template function for analyzing images
@@ -110,7 +182,7 @@ def MatchedTemplate(img, template, method, w, h, png_file, val, cell_list = []):
     #print(img_copy)
 
 
-    if val == 78:
+    if val == 28:
         f, ax1 = plt.subplots(1, 1)
         ax1.imshow(img_copy, cmap = 'gray')
         plt.show()

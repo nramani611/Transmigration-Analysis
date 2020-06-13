@@ -15,9 +15,21 @@ x, y = img_list[0].shape[::-1]
 png_file = np.zeros((x, y))
 cell_list = []
 
+f, ax1 = plt.subplots(1, 1)
+ax1.imshow(img_list[0], cmap = 'gray')
+plt.show()
+
 path = glob.glob("Cell_Templates/*.png")
 
 counter = 0
+
+#image = img_list[0]
+#lower_red = np.array([178, 179, 0])
+#upper_red = np.array([255, 255, 255])
+#hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+#mask = cv2.inRange(image, lower_red, upper_red)
+#coord = cv2.findNonZero(mask)
+#print(coord)
 
 for data in img_list:
     counter += 1
@@ -36,7 +48,7 @@ for data in img_list:
 
     for cell1 in temp_cell_list:
         for cell2 in cell_list:
-            if distance(cell1.get_current_loc(), cell2.get_current_loc()) < 10:
+            if distance(cell1.get_current_loc(), cell2.get_current_loc()) < 5:
                 break
         else:
             cell_list.append(cell1)
